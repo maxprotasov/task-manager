@@ -1,5 +1,5 @@
 {
-  "name": "orca-test-task",
+  "name": "task-manager",
   "version": "1.0.0",
   "private": true,
   "scripts": {
