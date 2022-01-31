@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { Button } from 'components/atoms'
 import { sortTasksByDate, sortTasksByTitle } from 'store/actions/taskActions'
 import { SORT_TYPES } from 'contants/commonContants'
+import { SortingPanelWrapper } from 'components/molecules/SortingPanel/SortingPannel.styles'
 
 const SortingPanel = () => {
   const dispatch = useDispatch()
@@ -16,11 +17,11 @@ const SortingPanel = () => {
   }, [dispatch])
 
   return (
-    <div>
+    <SortingPanelWrapper>
       Sort by
-      <Button onClick={onSortByDate}>Date</Button>
-      <Button onClick={onSortByTitle}>Title</Button>
-    </div>
+      <Button type="secondary" onClick={onSortByDate}>Date</Button>
+      <Button type="secondary" onClick={onSortByTitle}>Title</Button>
+    </SortingPanelWrapper>
   )
 }
 

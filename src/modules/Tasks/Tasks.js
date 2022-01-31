@@ -11,10 +11,14 @@ import { Button, Title, Search } from 'components/atoms'
 import { SortingPanel } from 'components/molecules'
 
 const CommonWrapper = styled.div`
-padding: 24px;
+  padding: 24px;
 `
 const TaskWrapper = styled.div`
   box-shadow: 0 2px 0 0 #314362;
+`
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
 `
 
 const Tasks = () => {
@@ -51,16 +55,20 @@ const Tasks = () => {
 
   return (
     <CommonWrapper>
-      <Title>
-        Tasks
+      <Header>
+        <Title>Tasks</Title>
+        <Search value={searchValue} onChange={setSearchValue} />
         <Button onClick={onCreateNewTask}>Create New Task</Button>
-      </Title>
-      <Search value={searchValue} onChange={setSearchValue} />
+      </Header>
       <SortingPanel />
       <section>
         {sortedTasks.map(task => {
-          const currentSubTasks = filteredBySearch.subTasks.find(subTask => task.id === subTask.taskId)
-          const currentTask = filteredBySearch.tasks.find(filteredTask => task.id === filteredTask.id)
+          const currentSubTasks = filteredBySearch.subTasks.find(
+            subTask => task.id === subTask.taskId,
+          )
+          const currentTask = filteredBySearch.tasks.find(
+            filteredTask => task.id === filteredTask.id,
+          )
 
           return (
             <TaskWrapper key={task.id}>
