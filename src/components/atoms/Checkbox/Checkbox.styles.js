@@ -11,7 +11,7 @@ export const Label = styled.label`
   position: relative;
   display: inline-block;
   cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
-  margin: 0.6em 2em;
+  margin: 0.6em 3em;
 `
 
 export const rotate = keyframes`
@@ -32,7 +32,7 @@ export const Indicator = styled.div`
   position: absolute;
   top: 0;
   left: -1.6em;
-  border: 1px solid #757575;
+  border: 1px solid #465f90;
   border-radius: 0.2em;
 
   ${Input}:not(:disabled):checked & {
@@ -55,7 +55,7 @@ export const Indicator = styled.div`
     left: 0.35em;
     width: 35%;
     height: 70%;
-    border: solid #263238;
+    border: solid #465f90;
     border-width: 0 0.2em 0.2em 0;
     animation-name: ${rotate};
     animation-duration: 0.3s;

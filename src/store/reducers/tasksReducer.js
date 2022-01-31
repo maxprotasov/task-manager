@@ -7,12 +7,12 @@ import {
   TASKS_FETCH_SUCCESS,
 } from 'store/actions/taskActions'
 
-const initSortMap = {
+export const initSortMap = {
   [SORT_TYPES.DATE]: { type: SORT_TYPES.DATE, fieldName: 'createTime', reverse: false },
   [SORT_TYPES.STRING]: { type: SORT_TYPES.STRING, fieldName: 'title', reverse: false },
 }
 
-const initialState = {
+export const initialState = {
   taskList: [],
   sortRules: initSortMap[SORT_TYPES.STRING],
 }
@@ -26,7 +26,7 @@ export default function (state = initialState, action) {
     }
 
     case TASK_CREATE_SUCCESS: {
-      return { ...state, taskList: [...state.taskList, payload.task] }
+      return { ...state, taskList: [ ...state.taskList, payload.task ] }
     }
 
     case TASK_DELETE_SUCCESS: {
@@ -42,7 +42,7 @@ export default function (state = initialState, action) {
         }
       }
 
-      return { ...state, sortRules: initSortMap[payload.type] }
+      return { ...state, sortRules: initSortMap[payload.type] || state.sortRules}
     }
 
     default:

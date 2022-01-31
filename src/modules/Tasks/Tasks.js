@@ -1,13 +1,21 @@
 import React, { useMemo, useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import styled from 'styled-components'
 import { createNewTask } from 'store/actions/taskActions'
 import { getTasksSelector, getSortRulesSelector } from 'store/selectors/tasksSelector'
 import { getSubTasksSelector } from 'store/selectors/subTasksSelector'
-import Task from 'modules/Tasks/components/Task/Task'
 import { sortBy } from 'utils/sort'
+import Task from 'modules/Tasks/components/Task/Task'
+import SubTask from 'modules/Tasks/components/SubTask/SubTask'
 import { Button, Title, Search } from 'components/atoms'
 import { SortingPanel } from 'components/molecules'
-import SubTask from 'modules/Tasks/components/SubTask/SubTask'
+
+const CommonWrapper = styled.div`
+padding: 24px;
+`
+const TaskWrapper = styled.div`
+  box-shadow: 0 2px 0 0 #314362;
+`
 
 const Tasks = () => {
   const tasks = useSelector(getTasksSelector)
@@ -42,10 +50,12 @@ const Tasks = () => {
   }, [dispatch])
 
   return (
-    <div>
-      <Title>Tasks</Title>
+    <CommonWrapper>
+      <Title>
+        Tasks
+        <Button onClick={onCreateNewTask}>Create New Task</Button>
+      </Title>
       <Search value={searchValue} onChange={setSearchValue} />
-      <Button onClick={onCreateNewTask}>Create New Task</Button>
       <SortingPanel />
       <section>
         {sortedTasks.map(task => {
@@ -53,17 +63,17 @@ const Tasks = () => {
           const currentTask = filteredBySearch.tasks.find(filteredTask => task.id === filteredTask.id)
 
           return (
-            <div key={task.id}>
+            <TaskWrapper key={task.id}>
               {currentTask && <Task task={task} />}
               {currentSubTasks &&
                 currentSubTasks.subTasks.map(subTask => (
                   <SubTask key={subTask.id} subTask={subTask} />
                 ))}
-            </div>
+            </TaskWrapper>
           )
         })}
       </section>
-    </div>
+    </CommonWrapper>
   )
 }
 

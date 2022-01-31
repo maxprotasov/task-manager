@@ -12,7 +12,7 @@ import {
   SUBTASK_DELETE,
 } from 'store/actions/subTaskActions'
 
-function* getSubTasks({ payload }) {
+export function* getSubTasks({ payload }) {
   try {
     const subTasksInfo = yield Promise.all(payload.tasks.map(task => fetchSubTasks(task.id)))
 
@@ -22,9 +22,9 @@ function* getSubTasks({ payload }) {
   }
 }
 
-function* getSubTask({ payload }) {
+export function* getSubTask({ payload }) {
   try {
-    const subTasks = yield call(() => fetchSubTasks(payload.task.id))
+    const subTasks = yield call(fetchSubTasks, payload.task.id)
 
     yield put(setSubTasksFetchSuccess({ subTasks }))
   } catch (e) {
@@ -32,9 +32,9 @@ function* getSubTask({ payload }) {
   }
 }
 
-function* onDeleteSubTask({ payload }) {
+export function* onDeleteSubTask({ payload }) {
   try {
-    const deletedSubTask = yield call(() => deleteSubtask(payload.subTaskId))
+    const deletedSubTask = yield call(deleteSubtask, payload.subTaskId)
     const subTasksInfo = yield select(getSubTasksSelector)
     const { subTasks } = subTasksInfo.find(el => el.taskId === deletedSubTask.taskId)
 

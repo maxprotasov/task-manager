@@ -11,7 +11,7 @@ import {
   TASK_DELETE,
 } from 'store/actions/taskActions'
 
-function* getTasks() {
+export function* getTasks() {
   try {
     const tasks = yield call(fetchTasks)
 
@@ -21,9 +21,9 @@ function* getTasks() {
   }
 }
 
-function* deleteTaskInfo({ payload }) {
+export function* deleteTaskInfo({ payload }) {
   try {
-    const deletedTask = yield call(() => deleteTask(payload.taskId))
+    const deletedTask = yield call(deleteTask, payload.taskId)
 
     yield put(setDeleteTaskSuccess({ taskId: deletedTask.id }))
   } catch (e) {
@@ -31,7 +31,7 @@ function* deleteTaskInfo({ payload }) {
   }
 }
 
-function* setNewTask() {
+export function* setNewTask() {
   try {
     const task = yield call(createTask)
 

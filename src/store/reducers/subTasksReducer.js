@@ -4,7 +4,7 @@ import {
   SUBTASKS_FETCH_SUCCESS,
 } from 'store/actions/subTaskActions'
 
-const initialState = {
+export const initialState = {
   subTasksInfo: [],
 }
 
@@ -13,7 +13,7 @@ export default function (state = initialState, action) {
 
   switch (type) {
     case SUBTASK_LIST_FETCH_SUCCESS: {
-      return { ...state, subTasksInfo: [...state.subTasksInfo, ...payload.subTasksInfo] }
+      return { ...state, subTasksInfo: payload.subTasksInfo }
     }
 
     case SUBTASKS_FETCH_SUCCESS: {

@@ -17,6 +17,7 @@ const SortingPanel = () => {
 
   return (
     <div>
+      Sort by
       <Button onClick={onSortByDate}>Date</Button>
       <Button onClick={onSortByTitle}>Title</Button>
     </div>

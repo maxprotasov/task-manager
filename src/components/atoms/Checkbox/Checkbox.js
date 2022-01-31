@@ -10,6 +10,7 @@ const Checkbox = ({ value, checked, onChange, label }) => (
       value={value}
       checked={checked}
       onChange={onChange}
+      disabled={checked}
     />
     <Indicator />
   </Label>

@@ -15,13 +15,13 @@ export const Input = styled.input`
   cursor: pointer;
 
   &:focus {
-    border-color: dodgerBlue;
-    box-shadow: 0 0 8px 0 dodgerBlue;
+    border-color: #465f90;
+    box-shadow: 0 0 8px 0 #465f90;
   }
 
   :focus + .left-icon {
     svg {
-      fill: dodgerBlue;
+      fill: #465f90;
     }
   }
 `;
@@ -50,7 +50,7 @@ export const StyledInput = styled.div`
     top: 50%;
     transform: translateY(-50%);
     svg {
-      fill: black;
+      fill: #465f90;
       transition: 0.3s;
     }
   }
