@@ -14,6 +14,8 @@ export const TASK_DELETE = 'TASK_DELETE'
 export const TASK_DELETE_SUCCESS = 'TASK_DELETE_SUCCESS'
 export const TASK_DELETE_ERROR = 'TASK_DELETE_ERROR'
 
+export const TASKS_SET_SEARCH_VALUE = 'TASKS_SET_SEARCH_VALUE'
+
 export const setTasksFetchSuccess = createAction(TASKS_FETCH_SUCCESS)
 export const setTasksFetchError = createAction(TASKS_FETCH_ERROR)
 
@@ -27,3 +29,5 @@ export const setDeleteTaskError = createAction(TASK_DELETE_ERROR)
 
 export const sortTasksByDate = createAction(SORT_TASKS_BY_DATE)
 export const sortTasksByTitle = createAction(SORT_TASKS_BY_TITLE)
+
+export const setSearchValue = createAction(TASKS_SET_SEARCH_VALUE)

@@ -2,6 +2,7 @@ import tasksReducer, { initialState, initSortMap } from 'store/reducers/tasksRed
 import {
   setCreatedTaskSuccess,
   setDeleteTaskSuccess,
+  setSearchValue,
   setTasksFetchSuccess,
   sortTasksByDate,
 } from 'store/actions/taskActions'
@@ -54,27 +55,45 @@ describe('Tasks Reducer', () => {
     })
   })
 
-  describe('Sort Tasks', () => {
-    test('By date', () => {
-      expect(tasksReducer(initialState, sortTasksByDate({ type: SORT_TYPES.DATE }))).toEqual({
+  describe('Search value', () => {
+    test('set some search value', () => {
+      expect(tasksReducer(initialState, setSearchValue({ searchValue: 'search value' }))).toEqual({
         ...initialState,
-        sortRules: initSortMap[SORT_TYPES.DATE],
+        searchValue: 'search value',
       })
     })
 
-    test('By Title', () => {
+    test('clear search value', () => {
       expect(
         tasksReducer(
-          { ...initialState, sortRules: initSortMap[SORT_TYPES.DATE] },
-          sortTasksByDate({ type: SORT_TYPES.STRING }),
+          { ...initialState, searchValue: 'search value' },
+          setSearchValue({ searchValue: '' }),
+        ),
+      ).toEqual({ ...initialState, searchValue: '' })
+    })
+  })
+
+  describe('Sort Tasks', () => {
+    test('By Title', () => {
+      expect(tasksReducer(initialState, sortTasksByDate({ type: SORT_TYPES.STRING }))).toEqual({
+        ...initialState,
+        sortRules: initSortMap[SORT_TYPES.STRING],
+      })
+    })
+
+    test('By Date', () => {
+      expect(
+        tasksReducer(
+          { ...initialState, sortRules: initSortMap[SORT_TYPES.STRING] },
+          sortTasksByDate({ type: SORT_TYPES.DATE }),
         ),
       ).toEqual(initialState)
     })
 
     test('By Undefined', () => {
-      expect(
-        tasksReducer(initialState, sortTasksByDate({ type: 'some Value' })),
-      ).toEqual(initialState)
+      expect(tasksReducer(initialState, sortTasksByDate({ type: 'some Value' }))).toEqual(
+        initialState,
+      )
     })
   })
 })

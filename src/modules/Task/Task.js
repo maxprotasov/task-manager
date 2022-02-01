@@ -4,7 +4,7 @@ import { Title } from 'components/atoms'
 
 const Task = ({ task }) => (
   <div>
-    <Title>{task.title}</Title>
+    <Title subTitle>{task.title}</Title>
   </div>
 )
 

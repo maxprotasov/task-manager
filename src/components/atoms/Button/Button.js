@@ -1,15 +1,17 @@
 import React from 'react'
-import { oneOf } from 'prop-types'
+import { bool, oneOf } from 'prop-types'
 import { Wrapper } from './Button.styles'
 
 const Button = props => <Wrapper {...props} />
 
 Button.propTypes = {
   type: oneOf(['primary', 'secondary']),
+  active: bool,
 }
 
 Button.defaultProps = {
   type: 'primary',
+  active: false,
 }
 
 export default Button

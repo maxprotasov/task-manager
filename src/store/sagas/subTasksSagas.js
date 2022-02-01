@@ -12,19 +12,25 @@ import {
   SUBTASK_DELETE,
 } from 'store/actions/subTaskActions'
 
-export function* getSubTasks({ payload }) {
-  try {
-    const subTasksInfo = yield Promise.all(payload.tasks.map(task => fetchSubTasks(task.id)))
+export function* onFetchSubtasks({ payload }) {
+  return yield call(fetchSubTasks, payload)
+}
 
-    yield put(setSubTaskListFetchSuccess({ subTasksInfo }))
+export function* getAllSubTasks({ payload }) {
+  try {
+    const subTasks = yield all(
+      payload.tasks.map(task => call(onFetchSubtasks, { payload: task.id })),
+    )
+
+    yield put(setSubTaskListFetchSuccess({ subTasks }))
   } catch (e) {
     yield put(setSubTaskListFetchError)
   }
 }
 
-export function* getSubTask({ payload }) {
+export function* getSubTasks({ payload: { task } }) {
   try {
-    const subTasks = yield call(fetchSubTasks, payload.task.id)
+    const subTasks = yield call(onFetchSubtasks, { payload: task.id })
 
     yield put(setSubTasksFetchSuccess({ subTasks }))
   } catch (e) {
@@ -35,10 +41,12 @@ export function* getSubTask({ payload }) {
 export function* onDeleteSubTask({ payload }) {
   try {
     const deletedSubTask = yield call(deleteSubtask, payload.subTaskId)
-    const subTasksInfo = yield select(getSubTasksSelector)
-    const { subTasks } = subTasksInfo.find(el => el.taskId === deletedSubTask.taskId)
+    const subTasks = yield select(getSubTasksSelector)
+    const isLastSubTask = subTasks.find(
+      ({ id, taskId }) => id !== deletedSubTask.id && taskId === deletedSubTask.taskId,
+    )
 
-    if (subTasks.length === 1) {
+    if (!isLastSubTask) {
       yield put(setDeleteTask({ taskId: deletedSubTask.taskId }))
     }
 
@@ -50,8 +58,8 @@ export function* onDeleteSubTask({ payload }) {
 
 function* subTaskSagas() {
   yield all([
-    takeLatest(TASKS_FETCH_SUCCESS, getSubTasks),
-    takeLatest(TASK_CREATE_SUCCESS, getSubTask),
+    takeLatest(TASKS_FETCH_SUCCESS, getAllSubTasks),
+    takeEvery(TASK_CREATE_SUCCESS, getSubTasks),
     takeEvery(SUBTASK_DELETE, onDeleteSubTask),
   ])
 }

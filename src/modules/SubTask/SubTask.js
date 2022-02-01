@@ -2,10 +2,10 @@ import React, { useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { string, shape, arrayOf } from 'prop-types'
 import { deleteSubTask } from 'store/actions/subTaskActions'
-import { Checkbox } from 'components/atoms'
+import { Checkbox, Chip } from 'components/atoms'
+import { SubTaskWrapper } from './SubTasks.styles'
 
-const SubTask = ({ subTask }) => {
-  const { id, title } = subTask
+const SubTask = ({ subTask: { id, title, labels } }) => {
   const dispatch = useDispatch()
   const [checked, setChecked] = useState(false)
 
@@ -15,11 +15,12 @@ const SubTask = ({ subTask }) => {
   }, [dispatch, id])
 
   return (
-    <div key={id}>
-      <div>
-        <Checkbox label={title} value={id} checked={checked} onChange={handleCheckboxChange} />
-      </div>
-    </div>
+    <SubTaskWrapper key={id}>
+      <Checkbox label={title} value={id} checked={checked} onChange={handleCheckboxChange} />
+      {labels.map(label => (
+        <Chip key={id + label} value={label} />
+      ))}
+    </SubTaskWrapper>
   )
 }
 

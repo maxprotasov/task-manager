@@ -5,6 +5,7 @@ import {
   TASK_CREATE_SUCCESS,
   TASK_DELETE_SUCCESS,
   TASKS_FETCH_SUCCESS,
+  TASKS_SET_SEARCH_VALUE,
 } from 'store/actions/taskActions'
 
 export const initSortMap = {
@@ -14,7 +15,8 @@ export const initSortMap = {
 
 export const initialState = {
   taskList: [],
-  sortRules: initSortMap[SORT_TYPES.STRING],
+  searchValue: '',
+  sortRules: initSortMap[SORT_TYPES.DATE],
 }
 
 export default function (state = initialState, action) {
@@ -26,11 +28,15 @@ export default function (state = initialState, action) {
     }
 
     case TASK_CREATE_SUCCESS: {
-      return { ...state, taskList: [ ...state.taskList, payload.task ] }
+      return { ...state, taskList: [...state.taskList, payload.task] }
     }
 
     case TASK_DELETE_SUCCESS: {
       return { ...state, taskList: state.taskList.filter(task => task.id !== payload.taskId) }
+    }
+
+    case TASKS_SET_SEARCH_VALUE: {
+      return { ...state, searchValue: payload.searchValue }
     }
 
     case SORT_TASKS_BY_TITLE:
@@ -42,7 +48,7 @@ export default function (state = initialState, action) {
         }
       }
 
-      return { ...state, sortRules: initSortMap[payload.type] || state.sortRules}
+      return { ...state, sortRules: initSortMap[payload.type] || state.sortRules }
     }
 
     default:

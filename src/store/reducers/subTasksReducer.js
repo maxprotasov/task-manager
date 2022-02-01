@@ -5,7 +5,7 @@ import {
 } from 'store/actions/subTaskActions'
 
 export const initialState = {
-  subTasksInfo: [],
+  subTasks: [],
 }
 
 export default function (state = initialState, action) {
@@ -13,26 +13,20 @@ export default function (state = initialState, action) {
 
   switch (type) {
     case SUBTASK_LIST_FETCH_SUCCESS: {
-      return { ...state, subTasksInfo: payload.subTasksInfo }
+      return {
+        ...state,
+        subTasks: payload.subTasks.reduce((acc, task) => [...acc, ...task], []),
+      }
     }
 
     case SUBTASKS_FETCH_SUCCESS: {
-      return { ...state, subTasksInfo: [...state.subTasksInfo, payload.subTasks] }
+      return { ...state, subTasks: [...state.subTasks, ...payload.subTasks] }
     }
 
     case SUBTASK_DELETE_SUCCESS: {
       return {
         ...state,
-        subTasksInfo: state.subTasksInfo.map(subTaskData => {
-          if (subTaskData.taskId === payload.taskId) {
-            return {
-              ...subTaskData,
-              subTasks: subTaskData.subTasks.filter(subTask => subTask.id !== payload.id),
-            }
-          }
-
-          return subTaskData
-        }),
+        subTasks: state.subTasks.filter(subTask => subTask.id !== payload.id),
       }
     }
 
