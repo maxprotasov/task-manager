@@ -7,7 +7,7 @@ import { initialState, initSortMap } from 'store/reducers/tasksReducer'
 import { SORT_TYPES } from 'contants/commonContants'
 import { sortBy } from 'utils/sort'
 
-describe('Subtasks Selector', () => {
+describe('Tasks Selector', () => {
   const tasks = [
     { id: 3, title: 'arrange', createTime: 1643733231569 },
     { id: 1, title: 'bor', createTime: 1643733227487 },
@@ -18,9 +18,15 @@ describe('Subtasks Selector', () => {
     { id: '4', taskId: 1, title: 'mifac' },
     { id: '2', taskId: 2, title: 'solliar' },
   ]
+
+  const selectedLabels = []
+  const labels = ['1', '2', '3', '4']
+
   const reducersState = {
     subTasksReducer: {
+      labels,
       subTasks,
+      selectedLabels,
     },
     tasksReducer: {
       ...initialState,
@@ -28,51 +34,51 @@ describe('Subtasks Selector', () => {
     },
   }
 
-  test('Get sort rules selector', () => {
-    expect(getSortRulesSelector(reducersState)).toEqual(initSortMap[SORT_TYPES.DATE])
+  it('Get sort rules selector', () => {
+    expect(getSortRulesSelector(reducersState)).toStrictEqual(initSortMap[SORT_TYPES.DATE])
     expect(
       getSortRulesSelector({
         ...reducersState,
         tasksReducer: { taskList: tasks, sortRules: initSortMap[SORT_TYPES.STRING] },
       }),
-    ).toEqual(initSortMap[SORT_TYPES.STRING])
+    ).toStrictEqual(initSortMap[SORT_TYPES.STRING])
   })
 
   describe('get sorted tasks selector', () => {
-    test('default state', () => {
-      expect(getSortedTasksSelector(reducersState)).toEqual(
+    it('default state', () => {
+      expect(getSortedTasksSelector(reducersState)).toStrictEqual(
         sortBy(tasks, initSortMap[SORT_TYPES.DATE]),
       )
-      expect(getSortedTasksSelector(reducersState)).not.toEqual(
+      expect(getSortedTasksSelector(reducersState)).not.toStrictEqual(
         sortBy(tasks, initSortMap[SORT_TYPES.STRING]),
       )
     })
 
-    test('sort type by date', () => {
+    it('sort type by date', () => {
       expect(
         getSortedTasksSelector({
           ...reducersState,
           tasksReducer: { taskList: tasks, sortRules: initSortMap[SORT_TYPES.STRING] },
         }),
-      ).toEqual(sortBy(tasks, initSortMap[SORT_TYPES.STRING]))
+      ).toStrictEqual(sortBy(tasks, initSortMap[SORT_TYPES.STRING]))
       expect(
         getSortedTasksSelector({
           ...reducersState,
           tasksReducer: { taskList: tasks, sortRules: initSortMap[SORT_TYPES.STRING] },
         }),
-      ).not.toEqual(sortBy(tasks, initSortMap[SORT_TYPES.DATE]))
+      ).not.toStrictEqual(sortBy(tasks, initSortMap[SORT_TYPES.DATE]))
     })
   })
 
   describe('get filtered tasks and subTasks selector', () => {
-    test('default sort value', () => {
-      expect(getFilteredTasksSubTasksSelector(reducersState)).toEqual({
+    it('default sort value', () => {
+      expect(getFilteredTasksSubTasksSelector(reducersState)).toStrictEqual({
         subTasks,
         tasks: sortBy(tasks, initSortMap[SORT_TYPES.DATE]),
       })
     })
 
-    test('first search value', () => {
+    it('first search value', () => {
       const filteredSubtasks = [
         { id: '4', taskId: 1, title: 'mifac' },
         { id: '2', taskId: 2, title: 'solliar' },
@@ -85,13 +91,13 @@ describe('Subtasks Selector', () => {
           ...reducersState,
           tasksReducer: { ...reducersState.tasksReducer, searchValue: 'a' },
         }),
-      ).toEqual({
+      ).toStrictEqual({
         subTasks: filteredSubtasks,
         tasks: sortBy(filteredTasks, initSortMap[SORT_TYPES.DATE]),
       })
     })
 
-    test('second search value', () => {
+    it('second search value', () => {
       const filteredSubtasks = [{ id: '1', taskId: 1, title: 'bore' }]
 
       const filteredTasks = [{ id: 1, title: 'bor', createTime: 1643733227487 }]
@@ -101,7 +107,7 @@ describe('Subtasks Selector', () => {
           ...reducersState,
           tasksReducer: { ...reducersState.tasksReducer, searchValue: 'bo' },
         }),
-      ).toEqual({
+      ).toStrictEqual({
         subTasks: filteredSubtasks,
         tasks: sortBy(filteredTasks, initSortMap[SORT_TYPES.DATE]),
       })

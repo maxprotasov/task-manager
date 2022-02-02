@@ -8,26 +8,33 @@ import {
 describe('Subtasks Reducer', () => {
   const subTasksLists = [
     [
-      { id: '1', taskId: 1 },
-      { id: '4', taskId: 1 },
+      { id: '1', taskId: 1, labels: ['1'] },
+      { id: '4', taskId: 1, labels: ['2'] },
     ],
-    [{ id: '2', taskId: 2 }],
+    [{ id: '2', taskId: 2, labels: ['3', '4'] }],
   ]
 
   const subTasks = [
-    { id: '1', taskId: 1 },
-    { id: '4', taskId: 1 },
-    { id: '2', taskId: 2 },
+    { id: '1', taskId: 1, labels: ['1'] },
+    { id: '4', taskId: 1, labels: ['2'] },
+    { id: '2', taskId: 2, labels: ['3', '4'] },
   ]
 
-  test('should return the initial state', () => {
-    expect(subTasksReducer(undefined, {})).toEqual(initialState)
+  const labels = ['1', '2', '3', '4']
+
+  it('should return the initial state', () => {
+    expect(subTasksReducer(undefined, {})).toStrictEqual(initialState)
   })
 
-  test('should set subTasksList after init fetch', () => {
+  it('should set subTasksList after init fetch', () => {
     expect(
-      subTasksReducer(initialState, setSubTaskListFetchSuccess({ subTasks: subTasksLists })),
-    ).toEqual({
+      subTasksReducer(
+        initialState,
+        setSubTaskListFetchSuccess({ ...initialState, subTasks: subTasksLists }),
+      ),
+    ).toStrictEqual({
+      ...initialState,
+      labels,
       subTasks,
     })
   })
@@ -35,31 +42,46 @@ describe('Subtasks Reducer', () => {
   describe('set sub tasks fetch success', () => {
     const newSubTasks = { id: '3', taskId: 3 }
 
-    test('with init state', () => {
+    it('with init state', () => {
       expect(
         subTasksReducer(initialState, setSubTasksFetchSuccess({ subTasks: [newSubTasks] })),
-      ).toEqual({ subTasks: [newSubTasks] })
+      ).toStrictEqual({ ...initialState, subTasks: [newSubTasks] })
     })
 
-    test('with some state', () => {
+    it('with some state', () => {
       expect(
-        subTasksReducer({ subTasks }, setSubTasksFetchSuccess({ subTasks: [newSubTasks] })),
-      ).toEqual({ subTasks: [...subTasks, newSubTasks] })
+        subTasksReducer(
+          { ...initialState, subTasks },
+          setSubTasksFetchSuccess({ subTasks: [newSubTasks] }),
+        ),
+      ).toStrictEqual({ ...initialState, subTasks: [...subTasks, newSubTasks] })
     })
   })
 
   describe('delete subtask success', () => {
-    test('deleted subtask is on the state', () => {
-      expect(subTasksReducer({ subTasks }, deleteSubTaskSuccess({ taskId: 1, id: '1' }))).toEqual({
+    it('deleted subtask is on the state', () => {
+      expect(
+        subTasksReducer(
+          { ...initialState, subTasks },
+          deleteSubTaskSuccess({ taskId: 1, id: '1' }),
+        ),
+      ).toStrictEqual({
+        ...initialState,
         subTasks: [
-          { id: '4', taskId: 1 },
-          { id: '2', taskId: 2 },
+          { id: '4', taskId: 1, labels: ['2'] },
+          { id: '2', taskId: 2, labels: ['3', '4'] },
         ],
       })
     })
 
-    test('deleted subtask is not on the state', () => {
-      expect(subTasksReducer({ subTasks }, deleteSubTaskSuccess({ taskId: 5, id: '5' }))).toEqual({
+    it('deleted subtask is not on the state', () => {
+      expect(
+        subTasksReducer(
+          { ...initialState, subTasks },
+          deleteSubTaskSuccess({ taskId: 5, id: '5' }),
+        ),
+      ).toStrictEqual({
+        ...initialState,
         subTasks,
       })
     })

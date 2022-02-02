@@ -18,8 +18,9 @@ const Tasks = () => {
     return (
       <TaskWrapper key={task.id}>
         {currentTask && <Task task={currentTask} />}
-        {currentSubTasks &&
-          currentSubTasks.map(subTask => <SubTask key={subTask.id} subTask={subTask} />)}
+        {currentSubTasks.map(subTask => (
+          <SubTask key={subTask.id} subTask={subTask} />
+        ))}
       </TaskWrapper>
     )
   })

@@ -61,7 +61,7 @@
         "aspects": ["invalidHref"]
       }
     ],
-    "jest/expect-expect": ["error", { "assertFunctionNames": ["expect", "testSaga"] }],
+    "jest/expect-expect": ["error", { "assertFunctionNames": ["expect", "testSaga", "expectSaga"] }],
     "jest/prefer-inline-snapshots": "off",
     "jest/prefer-expect-assertions": "off",
     "jest/prefer-called-with": "off",

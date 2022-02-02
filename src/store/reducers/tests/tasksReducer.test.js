@@ -8,18 +8,18 @@ import {
 } from 'store/actions/taskActions'
 import { SORT_TYPES } from 'contants/commonContants'
 
-describe('Tasks Reducer', () => {
+describe('tasks Reducer', () => {
   const tasks = [
     { id: 1, title: 'some title', createTime: '' },
     { id: 2, title: 'some title', createTime: '' },
   ]
 
-  test('Should return the initial state', () => {
-    expect(tasksReducer(undefined, {})).toEqual(initialState)
+  it('Should return the initial state', () => {
+    expect(tasksReducer(undefined, {})).toStrictEqual(initialState)
   })
 
-  test('Should set task after init fetch', () => {
-    expect(tasksReducer(initialState, setTasksFetchSuccess({ tasks }))).toEqual({
+  it('Should set task after init fetch', () => {
+    expect(tasksReducer(initialState, setTasksFetchSuccess({ tasks }))).toStrictEqual({
       ...initialState,
       taskList: tasks,
     })
@@ -28,13 +28,13 @@ describe('Tasks Reducer', () => {
   describe('Set tasks fetch success', () => {
     const newTasks = { id: 3, title: 'some title', createTime: '' }
 
-    test('With init state', () => {
+    it('With init state', () => {
       expect(
         tasksReducer(
           { ...initialState, taskList: tasks },
           setCreatedTaskSuccess({ task: newTasks }),
         ),
-      ).toEqual({
+      ).toStrictEqual({
         ...initialState,
         taskList: [...tasks, newTasks],
       })
@@ -42,56 +42,60 @@ describe('Tasks Reducer', () => {
   })
 
   describe('Delete Task success', () => {
-    test('Task is on the state', () => {
+    it('Task is on the state', () => {
       expect(
         tasksReducer({ ...initialState, taskList: tasks }, setDeleteTaskSuccess({ taskId: 1 })),
-      ).toEqual({ ...initialState, taskList: [tasks[1]] })
+      ).toStrictEqual({ ...initialState, taskList: [tasks[1]] })
     })
 
-    test('Task is not on the state', () => {
+    it('Task is not on the state', () => {
       expect(
         tasksReducer({ ...initialState, taskList: tasks }, setDeleteTaskSuccess({ taskId: 5 })),
-      ).toEqual({ ...initialState, taskList: tasks })
+      ).toStrictEqual({ ...initialState, taskList: tasks })
     })
   })
 
   describe('Search value', () => {
-    test('set some search value', () => {
-      expect(tasksReducer(initialState, setSearchValue({ searchValue: 'search value' }))).toEqual({
+    it('set some search value', () => {
+      expect(
+        tasksReducer(initialState, setSearchValue({ searchValue: 'search value' })),
+      ).toStrictEqual({
         ...initialState,
         searchValue: 'search value',
       })
     })
 
-    test('clear search value', () => {
+    it('clear search value', () => {
       expect(
         tasksReducer(
           { ...initialState, searchValue: 'search value' },
           setSearchValue({ searchValue: '' }),
         ),
-      ).toEqual({ ...initialState, searchValue: '' })
+      ).toStrictEqual({ ...initialState, searchValue: '' })
     })
   })
 
   describe('Sort Tasks', () => {
-    test('By Title', () => {
-      expect(tasksReducer(initialState, sortTasksByDate({ type: SORT_TYPES.STRING }))).toEqual({
+    it('By Title', () => {
+      expect(
+        tasksReducer(initialState, sortTasksByDate({ type: SORT_TYPES.STRING })),
+      ).toStrictEqual({
         ...initialState,
         sortRules: initSortMap[SORT_TYPES.STRING],
       })
     })
 
-    test('By Date', () => {
+    it('By Date', () => {
       expect(
         tasksReducer(
           { ...initialState, sortRules: initSortMap[SORT_TYPES.STRING] },
           sortTasksByDate({ type: SORT_TYPES.DATE }),
         ),
-      ).toEqual(initialState)
+      ).toStrictEqual(initialState)
     })
 
-    test('By Undefined', () => {
-      expect(tasksReducer(initialState, sortTasksByDate({ type: 'some Value' }))).toEqual(
+    it('By Undefined', () => {
+      expect(tasksReducer(initialState, sortTasksByDate({ type: 'some Value' }))).toStrictEqual(
         initialState,
       )
     })

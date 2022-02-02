@@ -5,3 +5,7 @@ export const Header = styled.div`
   justify-content: space-between;
   align-items: center;
 `
+
+export const SubHeader = styled(Header)`
+  margin: 10px 0;
+`

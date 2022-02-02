@@ -1,23 +1,24 @@
 import { createSelector } from '@reduxjs/toolkit'
+import intersection from 'lodash.intersection'
 
 export const subTasksSelector = state => state.subTasksReducer
 
-export const getSubTasksSelector = createSelector(subTasksSelector, subTasks => subTasks.subTasks)
+export const getSubTasksSelector = createSelector(subTasksSelector, ({ subTasks }) => subTasks)
+export const getLabelsSelector = createSelector(subTasksSelector, ({ labels }) => labels)
 
-export const getSubTaskLabelsSelector = createSelector(getSubTasksSelector, subTasks => {
-  const myMap = new Map()
+export const getSelectedLabelsSelector = createSelector(
+  subTasksSelector,
+  ({ selectedLabels }) => selectedLabels,
+)
+export const getSubTaskLabelsSelector = createSelector(getLabelsSelector, labels =>
+  labels.map(label => ({ value: label, label })),
+)
 
-  subTasks.forEach(({ labels, id }) =>
-    labels.forEach(label => {
-      const labelAlreadyDefined = myMap.has(label)
-
-      if (labelAlreadyDefined) {
-        return myMap.set(label, [...myMap.get(label), id])
-      }
-
-     return myMap.set(label, [id])
-    }),
-  )
-
-  return myMap
-})
+export const getFilteredSubtasksByLabelSelector = createSelector(
+  getSubTasksSelector,
+  getSelectedLabelsSelector,
+  (subTasks, selectedLabels) =>
+    selectedLabels.length
+      ? subTasks.filter(({ labels }) => intersection(labels, selectedLabels).length)
+      : subTasks,
+)

@@ -8,8 +8,8 @@ const history = createBrowserHistory()
 
 const reducer = combineReducers({
   router: connectRouter(history),
-  tasksReducer: tasksReducer,
-  subTasksReducer: subTasksReducer,
+  tasksReducer,
+  subTasksReducer,
 })
 
 export { history }
